@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.NetworkUtils;
 import com.easysocket.callback.ProgressDialogCallBack;
 import com.easysocket.callback.SimpleCallBack;
 import com.easysocket.config.EasySocketOptions;
@@ -39,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
         controlConnect=findViewById(R.id.control_conn);
 
-          findViewById(R.id.ping).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.ping).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 pingIp();
@@ -254,6 +255,7 @@ public class MainActivity extends AppCompatActivity {
      * 初始化EasySocket
      */
     private void initEasySocket() {
+        String ip= NetworkUtils.getIPAddress(true);
         //socket配置
         EasySocketOptions options = new EasySocketOptions.Builder()
                 .setSocketAddress(new SocketAddress("192.168.3.19", 9999)) //主机地址
@@ -267,25 +269,30 @@ public class MainActivity extends AppCompatActivity {
     }
     public static boolean pingIp(){
         String ip="baidu";
-        int s=3;
-        Process p;
-        try {
-            //ping -c 3 -w 100  中  ，-c 是指ping的次数 3是指ping 3次 ，-w 100  以秒为单位指定超时间隔，是指超时时间为100秒
+        ip=   NetworkUtils.getIPAddress(true);
+
+        if (true){
+
+            int s=3;
+            Process p;
+            try {
+                //ping -c 3 -w 100  中  ，-c 是指ping的次数 3是指ping 3次 ，-w 100  以秒为单位指定超时间隔，是指超时时间为100秒
 //            p = Runtime.getRuntime().exec("ping -c 3 -w "+s+"000 " + ip);
-            String mingling="adb shell ip -f inet addr show wlan0";
-            p = Runtime.getRuntime().exec(mingling);
-            int status = p.waitFor();
+                String mingling="adb shell ip -f inet addr show wlan0";
+                p = Runtime.getRuntime().exec(mingling);
+                int status = p.waitFor();
 //            pingLog(p);
-            if (status == 0) {
-                System.out.println("ping success");
-                return true;
-            } else {
-                System.out.println("ping faild");
+                if (status == 0) {
+                    System.out.println("ping success");
+                    return true;
+                } else {
+                    System.out.println("ping faild");
+                }
+            }catch (IOException | InterruptedException e) {
+                e.printStackTrace();
             }
         }
-        catch (InterruptedException e) {
-        }catch (IOException e) {
-        }
+
         return false;
     }
 }
