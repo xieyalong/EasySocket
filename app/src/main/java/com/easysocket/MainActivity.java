@@ -161,6 +161,7 @@ public class MainActivity extends AppCompatActivity {
 
     //启动心跳检测功能
     private void startHeartbeat() {
+
         //心跳实例
         ClientHeartBeat clientHeartBeat = new ClientHeartBeat();
         clientHeartBeat.setMsgId("heart_beat");
