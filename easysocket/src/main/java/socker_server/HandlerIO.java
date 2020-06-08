@@ -15,6 +15,7 @@ import socker_server.iowork.IWriter;
 
 /**
  * 服务器端处理消息
+ * 此类是服务器类，专门处理客户端发来的数据
  */
 public class HandlerIO {
     private IWriter easyWriter;
