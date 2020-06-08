@@ -32,7 +32,7 @@ public class HandlerIO {
      * @param receiver
      */
     public void handReceiveMsg(String receiver) {
-        System.out.println("======服务器端start========================");
+        System.out.println("======服务器端接收数据start========================");
         System.out.println("服务端接收到的信息receive message:" + receiver);
         if (null!=textView){
             textView.setText(receiver);
@@ -81,7 +81,7 @@ public class HandlerIO {
         if (superResponse == null) return;
         System.out.println("send message:" + convertObjectToJson(superResponse));
         easyWriter.offer(superResponse.parse());
-        System.out.println("======服务器端end========================");
+        System.out.println("======服务器端接收数据end========================");
     }
 
 
