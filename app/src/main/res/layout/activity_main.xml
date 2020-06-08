@@ -37,6 +37,13 @@
                 android:hint="输入对方的ip"
                 android:gravity="center"
                 />
+            <EditText
+                android:id="@+id/tv_dfData2"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="发送对方的数据"
+                android:gravity="center"
+                />
             <TextView
                 android:id="@+id/tv_data"
                 android:layout_width="match_parent"

@@ -39,13 +39,15 @@ public class MainActivity extends AppCompatActivity {
     private boolean isConnected;
     //连接或断开连接的按钮
     private Button controlConnect;
-    TextView tv_ip,tv_data;
+    TextView tv_ip,tv_data,tv_dfData2;
     EditText tv_ip2;
     String ip;
-    String ip2="192.168.200.2";
+//    String ip2="192.168.200.2";
     String ip3;
     TextView tv_dfData;
     public static  int i=0;
+    //模拟器ip Google Nexus=172.16.103.43
+    //模拟器ip Google Pixel=172.16.103.44
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         tv_data=findViewById(R.id.tv_data);
         tv_ip2=findViewById(R.id.tv_ip2);
         tv_dfData=findViewById(R.id.tv_dfData);
+        tv_dfData2=findViewById(R.id.tv_dfData2);
         HandlerIO.textView=tv_dfData;
         ip= NetworkUtils.getIPAddress(true);
         tv_ip.setText("当前ip"+ip);
@@ -162,33 +165,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-
-    /**
-     * 发送一个有回调的消息
-     */
-    private void sendCallbackMsg() {
-        i++;
-        CallbackSender sender = new CallbackSender();
-        sender.setMsgId("callback_msg");
-        sender.setFrom("我来自android");
-        sender.setData(""+i);
-        EasySocket.getInstance().upCallbackMessage(sender)
-                .onCallBack(new SimpleCallBack<CallbackResponse>(sender.getCallbackId()) {
-                    @Override
-                    public void onResponse(CallbackResponse response) {
-                        LogUtil.d("回调消息=" + response.toString());
-                        Toast.makeText(MainActivity.this,"回调消息："+response.toString(),Toast.LENGTH_LONG).show();
-                    }
-
-                    @Override
-                    public void onError(Exception e) {
-                        super.onError(e);
-                        e.printStackTrace();
-                    }
-                });
-    }
-
     //启动心跳检测功能
     private void startHeartbeat() {
 
@@ -215,14 +191,49 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
+     * 发送一个有回调的消息
+     * 这个是有服务端返回值的，只是发给服务端
+     * 服务端在HandlerIO.handReceiveMsg接收
+     */
+    private void sendCallbackMsg() {
+        i++;
+        CallbackSender sender = new CallbackSender();
+        sender.setMsgId("callback_msg");
+        sender.setFrom("我来自android");
+        sender.setData(""+i);
+        EasySocket.getInstance().upCallbackMessage(sender)
+                .onCallBack(new SimpleCallBack<CallbackResponse>(sender.getCallbackId()) {
+                    @Override
+                    public void onResponse(CallbackResponse response) {
+                        LogUtil.d("回调消息=" + response.toString());
+                        Toast.makeText(MainActivity.this,"回调消息："+response.toString(),Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        super.onError(e);
+                        e.printStackTrace();
+                    }
+                });
+    }
+
+
+
+    /**
      * 发送一个的消息，
+     * 这个是没有服务端返回值的，只是发给服务端
+     * 服务端在HandlerIO.handReceiveMsg接收
      */
     private void sendMessage() {
         i++;
         TestMsg testMsg = new TestMsg();
         testMsg.setMsgId("test_msg111");
         testMsg.setFrom("android i="+i);
-        testMsg.setData("i="+i);
+        if (!TextUtils.isEmpty(tv_dfData2.getText().toString())){
+            testMsg.setData(tv_dfData2.getText().toString());
+        }else{
+            testMsg.setData("i="+i);
+        }
         //发送
         EasySocket.getInstance().upObject(testMsg);
     }
@@ -273,6 +284,9 @@ public class MainActivity extends AppCompatActivity {
          * socket接收的数据
          * @param socketAddress
          * @param originReadData
+         * 发送一个有回调的事件 此方法才会走
+         * 使用本页的sendCallbackMsg() 方法
+         * 服务接收数据在HandlerIO.handReceiveMsg
          */
         @Override
         public void onSocketResponse(SocketAddress socketAddress, OriginReadData originReadData) {
