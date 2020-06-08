@@ -29,14 +29,14 @@ public class TestMsg extends SuperSender {
         this.from = from;
     }
 
-    @Override
-    public String toString() {
-        return "TestMessage{" +
-                "msgId='" + msgId + '\'' +
-                ", from='" + from + '\'' +
-                ", data='" + data + '\'' +
-                '}';
-    }
+//    @Override
+//    public String toString() {
+//        return "TestMessage{" +
+//                "msgId='" + msgId + '\'' +
+//                ", from='" + from + '\'' +
+//                ", data='" + data + '\'' +
+//                '}';
+//    }
 
     public String getData() {
         return data;

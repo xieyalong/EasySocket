@@ -200,7 +200,11 @@ public class MainActivity extends AppCompatActivity {
         CallbackSender sender = new CallbackSender();
         sender.setMsgId("callback_msg");
         sender.setFrom("我来自android");
-        sender.setData(""+i);
+        if (!TextUtils.isEmpty(tv_dfData2.getText().toString())){
+            sender.setData(tv_dfData2.getText().toString());
+        }else{
+            sender.setData(""+i);
+        }
         EasySocket.getInstance().upCallbackMessage(sender)
                 .onCallBack(new SimpleCallBack<CallbackResponse>(sender.getCallbackId()) {
                     @Override
