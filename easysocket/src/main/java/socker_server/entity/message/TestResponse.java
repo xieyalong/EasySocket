@@ -11,6 +11,7 @@ import socker_server.entity.message.base.SuperResponse;
 public class TestResponse extends SuperResponse {
 
     private String from;
+    private  String data;
 
     public String getFrom() {
         return from;
@@ -19,4 +20,12 @@ public class TestResponse extends SuperResponse {
     public void setFrom(String from) {
         this.from = from;
     }
+    public String getData() {
+        return data;
+    }
+
+    public void setData(String data) {
+        this.data = data;
+    }
+
 }

@@ -2,6 +2,7 @@ package socker_server;
 
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
 
 import socker_server.entity.MessageID;
@@ -47,16 +48,19 @@ public class HandlerIO {
                 (superResponse).setCallbackId(callbackId);
                 superResponse.setMsgId(MessageID.CALLBACK_MSG);
                 ((CallbackResponse) superResponse).setFrom("我来自server");
+                ((CallbackResponse) superResponse).setData("这是客户端传给服务端的数据="+receiver);
                 break;
 
             case MessageID.TEST_MSG: //测试消息
                 superResponse = new TestResponse();
                 superResponse.setMsgId(MessageID.TEST_MSG);
                 ((TestResponse) superResponse).setFrom("server");
+                ((TestResponse) superResponse).setData("这是客户端传给服务端的数据="+receiver);
                 break;
             case MessageID.HEARTBEAT: //心跳包
                 superResponse = new ServerHeartBeat();
                 ((ServerHeartBeat) superResponse).setFrom("server");
+                ((ServerHeartBeat) superResponse).setData("这是客户端传给服务端的数据="+receiver);
                 superResponse.setMsgId(MessageID.HEARTBEAT);
                 break;
 
@@ -65,6 +69,7 @@ public class HandlerIO {
                 (superResponse).setCallbackId(callbackId);
                 superResponse.setMsgId(MessageID.DELAY_MSG);
                 ((DelayResponse) superResponse).setFrom("server");
+                ((DelayResponse) superResponse).setData("这是客户端传给服务端的数据="+receiver);
                 try {
                     Thread.sleep(1000 * 5);
                 } catch (InterruptedException e) {
@@ -81,9 +86,10 @@ public class HandlerIO {
 
 
     private String convertObjectToJson(Object object) {
-        Gson gson = new Gson();
-        String json = gson.toJson(object);
-        return json;
+//        Gson gson = new Gson();
+//        String json = gson.toJson(object);
+//        return json;
+        return JSON.toJSONString(object);
     }
     ServiceListener serviceListener;
     public  interface  ServiceListener{

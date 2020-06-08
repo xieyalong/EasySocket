@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     String ip3;
     TextView tv_dfData;
     public static  int i=0;
-    //模拟器ip Google Nexus=172.16.103.43
+    //模拟器ip Google Nexus6=172.16.103.43
     //模拟器ip Google Pixel=172.16.103.44
 
     @Override
