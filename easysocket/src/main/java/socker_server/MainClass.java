@@ -37,7 +37,7 @@ public class MainClass {
             mExecutorService = Executors.newCachedThreadPool();
             System.out.println("服务端运行 server is running");
             Socket client;
-            while (true) {
+            while (true) {//死循环 监听客户端发送的数据
                 client = server.accept();
                 mList.add(client);
                 mExecutorService.execute(new Service(client));
