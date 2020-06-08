@@ -11,6 +11,7 @@ public class TestMsg extends SuperSender {
 
     private String msgId;
     private String from;
+    private  String data;
 
     public String getMsgId() {
         return msgId;
@@ -33,6 +34,15 @@ public class TestMsg extends SuperSender {
         return "TestMessage{" +
                 "msgId='" + msgId + '\'' +
                 ", from='" + from + '\'' +
+                ", data='" + data + '\'' +
                 '}';
+    }
+
+    public String getData() {
+        return data;
+    }
+
+    public void setData(String data) {
+        this.data = data;
     }
 }

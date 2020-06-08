@@ -12,6 +12,7 @@ public class CallbackSender extends SuperCallbackSender {
     private String msgId;
     private String from;
     private String callbackId;
+    private  String data;
 
     public String getMsgId() {
         return msgId;
@@ -37,5 +38,13 @@ public class CallbackSender extends SuperCallbackSender {
     @Override
     public void setCallbackId(String callbackId) {
         this.callbackId=callbackId;
+    }
+
+    public String getData() {
+        return data;
+    }
+
+    public void setData(String data) {
+        this.data = data;
     }
 }

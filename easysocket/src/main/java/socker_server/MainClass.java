@@ -1,6 +1,6 @@
-package com.socker_server;
+package socker_server;
 
-import com.socker_server.iowork.IOManager;
+
 
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import socker_server.iowork.IOManager;
 
 /**
  * 服务器端启动

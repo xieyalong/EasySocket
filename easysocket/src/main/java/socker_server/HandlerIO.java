@@ -1,20 +1,24 @@
-package com.socker_server;
+package socker_server;
+
+import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.socker_server.entity.MessageID;
-import com.socker_server.entity.message.CallbackResponse;
-import com.socker_server.entity.message.DelayResponse;
-import com.socker_server.entity.message.ServerHeartBeat;
-import com.socker_server.entity.message.TestResponse;
-import com.socker_server.entity.message.base.SuperClient;
-import com.socker_server.entity.message.base.SuperResponse;
-import com.socker_server.iowork.IWriter;
+
+import socker_server.entity.MessageID;
+import socker_server.entity.message.CallbackResponse;
+import socker_server.entity.message.DelayResponse;
+import socker_server.entity.message.ServerHeartBeat;
+import socker_server.entity.message.TestResponse;
+import socker_server.entity.message.base.SuperClient;
+import socker_server.entity.message.base.SuperResponse;
+import socker_server.iowork.IWriter;
 
 /**
  * 服务器端处理消息
  */
 public class HandlerIO {
     private IWriter easyWriter;
+    public  static TextView textView;
 
     public HandlerIO(IWriter easyWriter) {
         this.easyWriter = easyWriter;
@@ -28,6 +32,9 @@ public class HandlerIO {
     public void handReceiveMsg(String receiver) {
         System.out.println("======服务器端start========================");
         System.out.println("服务端接收到的信息receive message:" + receiver);
+        if (null!=textView){
+            textView.setText(receiver);
+        }
         SuperClient clientMsg = new Gson().fromJson(receiver, SuperClient.class);
         String id = clientMsg.getMsgId(); //消息ID
         String callbackId = clientMsg.getCallbackId(); //回调ID

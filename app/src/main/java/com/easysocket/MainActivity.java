@@ -3,10 +3,14 @@ package com.easysocket;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.JsonUtils;
 import com.blankj.utilcode.util.NetworkUtils;
 import com.easysocket.callback.ProgressDialogCallBack;
 import com.easysocket.callback.SimpleCallBack;
@@ -25,18 +29,42 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 
+import socker_server.HandlerIO;
+import socker_server.MainClass;
+
+
 public class MainActivity extends AppCompatActivity {
 
     //是否已连接
     private boolean isConnected;
     //连接或断开连接的按钮
     private Button controlConnect;
-
+    TextView tv_ip,tv_data;
+    EditText tv_ip2;
+    String ip;
+    String ip2="192.168.200.2";
+    String ip3;
+    TextView tv_dfData;
+    public static  int i=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        tv_ip=findViewById(R.id.tv_ip);
+        tv_data=findViewById(R.id.tv_data);
+        tv_ip2=findViewById(R.id.tv_ip2);
+        tv_dfData=findViewById(R.id.tv_dfData);
+        HandlerIO.textView=tv_dfData;
+        ip= NetworkUtils.getIPAddress(true);
+        tv_ip.setText("当前ip"+ip);
+        ip3=ip;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                new MainClass().init();
+            }
+        }).start();
 
         controlConnect=findViewById(R.id.control_conn);
 
@@ -140,10 +168,11 @@ public class MainActivity extends AppCompatActivity {
      * 发送一个有回调的消息
      */
     private void sendCallbackMsg() {
-
+        i++;
         CallbackSender sender = new CallbackSender();
         sender.setMsgId("callback_msg");
         sender.setFrom("我来自android");
+        sender.setData(""+i);
         EasySocket.getInstance().upCallbackMessage(sender)
                 .onCallBack(new SimpleCallBack<CallbackResponse>(sender.getCallbackId()) {
                     @Override
@@ -189,9 +218,11 @@ public class MainActivity extends AppCompatActivity {
      * 发送一个的消息，
      */
     private void sendMessage() {
+        i++;
         TestMsg testMsg = new TestMsg();
-        testMsg.setMsgId("test_msg");
-        testMsg.setFrom("android");
+        testMsg.setMsgId("test_msg111");
+        testMsg.setFrom("android i="+i);
+        testMsg.setData("i="+i);
         //发送
         EasySocket.getInstance().upObject(testMsg);
     }
@@ -246,7 +277,8 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onSocketResponse(SocketAddress socketAddress, OriginReadData originReadData) {
             super.onSocketResponse(socketAddress, originReadData);
-            LogUtil.d("socket监听器收到数据=" + originReadData.getBodyString());
+            LogUtil.d("socket监听器收到数据=" + originReadData.getBodyString()+"---"+ com.alibaba.fastjson.JSONObject.toJSONString(originReadData));
+            tv_data.setText(originReadData.getBodyString());
         }
     };
 
@@ -255,10 +287,14 @@ public class MainActivity extends AppCompatActivity {
      * 初始化EasySocket
      */
     private void initEasySocket() {
-        String ip= NetworkUtils.getIPAddress(true);
+        String eip=tv_ip2.getText().toString();
+        if (!TextUtils.isEmpty(eip)){
+            ip3=eip;
+        }
         //socket配置
         EasySocketOptions options = new EasySocketOptions.Builder()
-                .setSocketAddress(new SocketAddress("192.168.3.19", 9999)) //主机地址
+//                .setSocketAddress(new SocketAddress("192.168.3.19", 9999)) //主机地址
+                .setSocketAddress(new SocketAddress(ip3, 9999)) //主机地址
                 .setCallbackIdKeyFactory(new CallbackIdKeyFactoryImpl())
                 .build();
 
