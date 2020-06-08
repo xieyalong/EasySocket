@@ -31,6 +31,7 @@ import java.io.IOException;
 
 import socker_server.HandlerIO;
 import socker_server.MainClass;
+import socker_server.entity.MessageID;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -170,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
 
         //心跳实例
         ClientHeartBeat clientHeartBeat = new ClientHeartBeat();
-        clientHeartBeat.setMsgId("heart_beat");
+        clientHeartBeat.setMsgId(MessageID.HEARTBEAT);
         clientHeartBeat.setFrom("client");
         EasySocket.getInstance().startHeartBeat(clientHeartBeat, new HeartManager.HeartbeatListener() {
             @Override
@@ -198,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
     private void sendCallbackMsg() {
         i++;
         CallbackSender sender = new CallbackSender();
-        sender.setMsgId("callback_msg");
+        sender.setMsgId(MessageID.CALLBACK_MSG);
         sender.setFrom("我来自android");
         if (!TextUtils.isEmpty(tv_dfData2.getText().toString())){
             sender.setData(tv_dfData2.getText().toString());
@@ -231,7 +232,8 @@ public class MainActivity extends AppCompatActivity {
     private void sendMessage() {
         i++;
         TestMsg testMsg = new TestMsg();
-        testMsg.setMsgId("test_msg111");
+        //手动设置msgId，像有回调的是自动分配的
+        testMsg.setMsgId("test_msg");
         testMsg.setFrom("android i="+i);
         if (!TextUtils.isEmpty(tv_dfData2.getText().toString())){
             testMsg.setData(tv_dfData2.getText().toString());

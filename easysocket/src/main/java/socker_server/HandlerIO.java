@@ -41,7 +41,7 @@ public class HandlerIO {
         String id = clientMsg.getMsgId(); //消息ID
         String callbackId = clientMsg.getCallbackId(); //回调ID
         SuperResponse superResponse = null;
-
+        //普通发送 不走switch 因为MsgId是发送端自定义的id，其他都是自动分配的
         switch (id) {
             case MessageID.CALLBACK_MSG: //回调消息
                 superResponse = new CallbackResponse();
